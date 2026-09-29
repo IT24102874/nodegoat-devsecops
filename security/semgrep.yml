@@ -1,0 +1,24 @@
+rules:
+  - id: no-eval-user-input
+    message: User-controlled input must never be evaluated as JavaScript.
+    severity: ERROR
+    languages: [javascript]
+    pattern: eval(req.body.$FIELD)
+    paths:
+      exclude:
+        - app/app/views/tutorial/**
+
+  - id: no-mongodb-where
+    message: Avoid MongoDB $where because it evaluates JavaScript.
+    severity: ERROR
+    languages: [javascript]
+    pattern-regex: "\$where\s*:"
+    paths:
+      exclude:
+        - app/app/views/tutorial/**
+
+  - id: no-hardcoded-session-secret
+    message: Session secrets must be supplied through environment configuration.
+    severity: ERROR
+    languages: [javascript]
+    pattern-regex: "cookieSecret\s*:\s*[\"']"

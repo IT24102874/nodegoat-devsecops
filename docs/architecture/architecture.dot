@@ -1,0 +1,17 @@
+digraph G {
+  rankdir=LR;
+  graph [fontname="Arial", bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="Arial", fillcolor="white"];
+  edge [fontname="Arial"];
+
+  internet [label="User / Browser\nTrust Boundary: Public"];
+  web [label="NodeGoat Web\nNode.js + Express\nPort 4000"];
+  mongo [label="MongoDB\nPort 27017\nInternal only"];
+  gha [label="GitHub Actions\nSAST / SCA / Secrets / Trivy"];
+  registry [label="Container Image\nBuild Artifact"];
+
+  internet -> web [label="HTTP"];
+  web -> mongo [label="MongoDB driver"];
+  gha -> registry [label="build + scan"];
+  gha -> web [style=dashed,label="tests / optional DAST"];
+}

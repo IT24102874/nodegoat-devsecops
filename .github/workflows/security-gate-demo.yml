@@ -1,0 +1,27 @@
+name: Security Gate Demonstration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  intentional-failure-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create temporary intentionally vulnerable fixture
+        run: |
+          mkdir -p /tmp/security-gate-demo
+          cat > /tmp/security-gate-demo/bad.js <<'EOF'
+          function demo(req) {
+            return eval(req.body.input);
+          }
+          EOF
+
+      - name: Prove SAST gate blocks a bad build
+        uses: semgrep/semgrep@v1
+        with:
+          args: --config security/semgrep.yml --error /tmp/security-gate-demo

@@ -1,0 +1,23 @@
+name: Optional OWASP ZAP DAST
+
+on:
+  workflow_dispatch:
+
+jobs:
+  zap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build application
+        run: docker compose build
+      - name: Start application
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          SEED_ADMIN_PASSWORD: ${{ secrets.SEED_ADMIN_PASSWORD }}
+          SEED_USER1_PASSWORD: ${{ secrets.SEED_USER1_PASSWORD }}
+          SEED_USER2_PASSWORD: ${{ secrets.SEED_USER2_PASSWORD }}
+        run: docker compose up -d
+      - name: ZAP baseline
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://127.0.0.1:4000'
