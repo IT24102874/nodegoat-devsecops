@@ -12,7 +12,7 @@ rules:
     message: Avoid MongoDB $where because it evaluates JavaScript.
     severity: ERROR
     languages: [javascript]
-    pattern-regex: "\$where\s*:"
+    pattern-regex: '\$where\s*:'
     paths:
       exclude:
         - app/app/views/tutorial/**
@@ -21,4 +21,4 @@ rules:
     message: Session secrets must be supplied through environment configuration.
     severity: ERROR
     languages: [javascript]
-    pattern-regex: "cookieSecret\s*:\s*[\"']"
+    pattern-regex: "cookieSecret\\s*:\\s*['\"]"
