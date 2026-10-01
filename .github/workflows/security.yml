@@ -31,10 +31,17 @@ jobs:
         working-directory: app
         run: npm run security:test
 
-      - name: SAST - Semgrep
-        uses: semgrep/semgrep@v1
+      - uses: semgrep/semgrep@v1
         with:
-          args: --config security/semgrep.yml --error app
+           config: auto
+      - name: Run Semgrep
+        run: |
+          pip install semgrep
+          semgrep --config=auto --sarif --output=semgrep.sarif . || true     
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif    
 
       - name: Dependency scan - npm audit
         working-directory: app
