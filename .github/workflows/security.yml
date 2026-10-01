@@ -34,10 +34,12 @@ jobs:
       - uses: semgrep/semgrep@v1
         with:
            config: auto
+           
       - name: Run Semgrep
         run: |
           pip install semgrep
-          semgrep --config=auto --sarif --output=semgrep.sarif . || true     
+          semgrep --config=auto --sarif --output=semgrep.sarif . || true    
+          
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v3
         with:
